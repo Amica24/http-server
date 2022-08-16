@@ -31,7 +31,12 @@ http-сервер реализует XMLRPC API и содержит 2 метод
       $ sudo apt update
 Далее установите необходимые для работы PostgreSQL пакеты:
       
-      $ sudo apt install postgresql postgresql-contrib -y 
+      $ sudo apt install postgresql postgresql-contrib -y
+      
+Запустите сервер базы данных:
+
+      $ sudo systemctl start postgresql
+
 Установка виртуального окружениия:
 
       $ python3 -m venv env
@@ -42,6 +47,16 @@ http-сервер реализует XMLRPC API и содержит 2 метод
 
       $ pip install --upgrade pip
       $ pip install -r requirements.txt
+
+Создайте файл с переменными окруженииия:
+      
+      $ sudo touch .env
+И заполните его данными:   
+
+        DATABASE_HOST = 127.0.0.1
+        DATABASE_USER = postgres
+        DATABASE_PWD = postgres
+        DATABASE_NAME = postgres
       
 Далее необходимо выполнить команду, создающую таблицу в базе данных
 и заполняющую ее данными:
