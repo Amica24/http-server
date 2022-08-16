@@ -1,0 +1,4 @@
+2022-08-16 20:08:43,729 - INFO - (1, 'Grace', 'Maine Coon')
+2022-08-16 20:08:43,735 - INFO - (11, 'Bread', 'Outbred')
+2022-08-16 20:09:08,994 - INFO - (2, 'Luna', 'American Bobtail')
+2022-08-16 20:09:09,036 - INFO - (11, 'Bread', 'Outbred')

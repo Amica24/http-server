@@ -1,0 +1,27 @@
+CREATE OR REPLACE PROCEDURE read (id INT) AS
+$$
+#variable_conflict use_column
+BEGIN
+PERFORM * FROM cats WHERE id=$1;
+END;
+$$
+LANGUAGE PLPGSQL;
+
+___________________________________
+
+CREATE OR REPLACE PROCEDURE save (
+    id INT,
+    field_name varchar,
+    data varchar
+    )
+AS $$
+#variable_conflict use_column
+BEGIN
+    INSERT INTO cats (id, $2) VALUES
+    ($1, $3)
+    ON CONFLICT (id) DO UPDATE
+    SET $2 = $3
+    RETURNING *;
+END;
+$$
+LANGUAGE PLPGSQL;
