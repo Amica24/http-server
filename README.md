@@ -21,7 +21,7 @@ http-сервер реализует XMLRPC API и содержит 2 метод
 
 ### Запуск проекта:
 
-      $ git clone 
+      $ git clone git@github.com:Amica24/http-server.git
       $ cd http-server
       
 Установка PostgreSQL
