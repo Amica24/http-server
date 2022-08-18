@@ -1,4 +1,5 @@
 import logging
+from multiprocessing import Queue, Process
 from xmlrpc.server import SimpleXMLRPCServer
 
 import psycopg2
@@ -27,15 +28,15 @@ connection.autocommit = True
 server = SimpleXMLRPCServer(('127.0.0.1', 8000), allow_none=True)
 
 
-def read(id):
+def read(id, q):
     with connection.cursor() as cur:
         cur.execute('''
             SELECT * FROM cats WHERE id = '{0}';
         '''.format(id))
-        logger.info(cur.fetchone())
+        q.put(cur.fetchone())
 
 
-def save(id, field_name, data):
+def save(id: int, field_name: str, data: str, q: Queue):
     with connection.cursor() as cur:
         cur.execute('''
             INSERT INTO cats (id, {1}) VALUES
@@ -44,12 +45,25 @@ def save(id, field_name, data):
             SET {1} = '{2}'
             RETURNING *;
         '''.format(id, field_name, data))
-        logger.info(cur.fetchone())
+        q.put(cur.fetchone())
+
+
+def multifunction(id1: int, id2: int, field_name: str, data: str):
+    q = Queue()
+    p = Process(target=read, args=(id1, q))
+    p.start()
+    p1 = Process(target=save, args=(id2, field_name, data, q))
+    p1.start()
+    logger.info(q.get())
+    logger.info(q.get())
+    p.join()
+    p1.join()
 
 
 server.register_multicall_functions()
 server.register_function(read, 'read')
 server.register_function(save, 'save')
+server.register_function(multifunction, 'multifunction')
 
 
 if __name__ == '__main__':

@@ -5,5 +5,4 @@ proxy = xmlrpc.client.ServerProxy(url)
 
 
 if __name__ == '__main__':
-    print(proxy.read(1))
-    print(proxy.save(11, 'name', 'Bread'))
+    print(proxy.multifunction(1, 11, 'name', 'Bread'))
